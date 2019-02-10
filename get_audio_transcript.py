@@ -3,7 +3,7 @@ import speech_recognition as sr
 from tqdm import tqdm
 from multiprocessing.dummy import Pool
 
-def get_transcript(file_name, key_name):
+def get_audio_transcript(file_name, key_name):
     NUM_THREADS = 100 # Number of concurrent threads
     r = sr.Recognizer()
     with open(key_name) as f:
@@ -25,11 +25,14 @@ def get_transcript(file_name, key_name):
         }
 
     pool = Pool(NUM_THREADS)
-    os.system("mkdir parts")
+    targDir = "parts"
+    os.system("mkdir {}".format(targDir))
     os.system("ulimit -n 2048")
-    command = 'ffmpeg -i "{}" -f segment -segment_time 28 -c copy parts/out%09d.wav'.format(file_name)
+    os.system('ffmpeg -i "{}" -acodec pcm_s16le -ac 1 -ar 8000 "{}".wav'.format(file_name, file_name))
+    command = 'ffmpeg -i "{}.wav" -f segment -segment_time 27 -c copy {}/out%09d.wav'.format(file_name, targDir)
     os.system(command)
-    files = sorted(os.listdir('parts/'))
+    os.system('rm -rf "{}.wav"'.format(file_name))
+    files = sorted(os.listdir('{}/'.format(targDir)))
     all_text = pool.map(transcribe, enumerate(files))
     pool.close()
     pool.join()
@@ -38,7 +41,7 @@ def get_transcript(file_name, key_name):
     for t in sorted(all_text, key=lambda x: x['idx']):
         # Format time as h:m:s - 30 seconds of text
         transcript += "{}\n".format(t['text'])
-    os.system("rm -rf parts")
+    os.system("rm -rf {}".format(targDir))
     return transcript
 
-#print(get_transcript('MS&E 472 (long).wav', "api-key.json"))
+#print(get_transcript('MS&E 472.mp4', "api-key.json"))

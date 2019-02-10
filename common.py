@@ -2,7 +2,7 @@ from flask import Flask, url_for, redirect, render_template, request, Blueprint
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
-from get_transcript import get_transcript
+from get_audio_transcript import get_audio_transcript
 from werkzeug import secure_filename
 import time
 import json
@@ -63,7 +63,7 @@ def upload_file_post():
         #     print(result.alternatives[0].transcript)
         # with open("text.txt", "w") as f:
         #     f.write(text)
-        text = get_transcript(secure_filename(f.filename), secure_filename(os.environ['GOOGLE_APPLICATION_CREDENTIALS']))
+        text = get_audio_transcript(secure_filename(f.filename), secure_filename(os.environ['GOOGLE_APPLICATION_CREDENTIALS']))
         print(text)
         r.extract_keywords_from_text(text)
         return render_template("displayresults.html", keynote = r.get_ranked_phrases()[0:6], source = text)
