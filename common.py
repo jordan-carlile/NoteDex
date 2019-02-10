@@ -63,7 +63,7 @@ def upload_file_post():
         #     print(result.alternatives[0].transcript)
         # with open("text.txt", "w") as f:
         #     f.write(text)
-        text = get_audio_transcript(secure_filename(f.filename), secure_filename(os.environ['GOOGLE_APPLICATION_CREDENTIALS']))
+        text = get_audio_transcript(secure_filename(f.filename))
         print(text)
         r.extract_keywords_from_text(text)
         return render_template("displayresults.html", keynote = r.get_ranked_phrases()[0:6], source = text)

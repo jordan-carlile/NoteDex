@@ -15,10 +15,10 @@ def getExtension(path):
         filename, file_extension = os.path.splitext(path)
         return file_extension
 
-def get_audio_transcript(file_name, key_name):
+def get_audio_transcript(file_name):
     NUM_THREADS = 100 # Number of concurrent threads
     r = sr.Recognizer()
-    with open(key_name) as f:
+    with open(os.environ["GCP_CREDENTIALS"]) as f:
         GOOGLE_CLOUD_SPEECH_CREDENTIALS = f.read()
 
     def transcribe(data):
