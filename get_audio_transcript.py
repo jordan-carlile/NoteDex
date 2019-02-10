@@ -18,7 +18,7 @@ def getExtension(path):
 def get_audio_transcript(file_name):
     NUM_THREADS = 100 # Number of concurrent threads
     r = sr.Recognizer()
-    with open(os.environ["GCP_CREDENTIALS"]) as f:
+    with open('api-key.json') as f:
         GOOGLE_CLOUD_SPEECH_CREDENTIALS = f.read()
 
     def transcribe(data):
