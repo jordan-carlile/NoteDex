@@ -29,7 +29,10 @@ def get_audio_transcript(file_name):
         with sr.AudioFile(name) as source:
             audio = r.record(source)
         # Transcribe audio file
-        text = r.recognize_google_cloud(audio, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS)
+        try:
+            text = r.recognize_google_cloud(audio, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS)
+        except:
+            text = ""
         print(name + " done")
         return {
             "idx": idx,
@@ -43,11 +46,11 @@ def get_audio_transcript(file_name):
     ext = getExtension(file_name)
     if ext == '.mp4':
         os.system('ffmpeg -i "{}" -acodec pcm_s16le -ac 1 -ar 8000 "{}".wav'.format(file_name, file_name))
-        command = 'ffmpeg -i "{}.wav" -f segment -segment_time 27 -c copy {}/out%09d.wav'.format(file_name, targDir)
+        command = 'ffmpeg -i "{}.wav" -f segment -segment_time 30 -c copy {}/out%09d.wav'.format(file_name, targDir)
         os.system(command)
         os.system('rm -rf "{}.wav"'.format(file_name))
     elif ext == '.wav':
-        command = 'ffmpeg -i "{}" -f segment -segment_time 27 -c copy {}/out%09d.wav'.format(file_name, targDir)
+        command = 'ffmpeg -i "{}" -f segment -segment_time 30 -c copy {}/out%09d.wav'.format(file_name, targDir)
         os.system(command)
     files = sorted(os.listdir('{}/'.format(targDir)))
     all_text = pool.map(transcribe, enumerate(files))
