@@ -6,6 +6,8 @@ from get_audio_transcript import get_audio_transcript
 from get_summary import get_summary
 from get_img_text import get_img_text
 from werkzeug import secure_filename
+from twilio.rest import Client
+from send_message import send_message
 import time
 import json
 import requests
@@ -21,10 +23,10 @@ importlib.reload(sys)
 
 from rake_nltk import Rake
 
+totalSize = 0
 r = Rake() # Uses stopwords for english from NLTK, and all puntuation characters.
 # sys.setdefaultencoding('utf-8')
 # model = gensim.models.KeyedVectors.load_word2vec_format('./GoogleNews-vectors-negative300.bin', binary=True)
-
 
 commonPages = Blueprint('commonPages', __name__)
 #-----------------Routing--------------------------------
@@ -56,6 +58,7 @@ def upload_file_post():
         else:
             text = get_img_text(secure_filename(f.filename))
         print(text)
+        send_message(f.filename, file_size(secure_filename(f.filename)), convert_bytes(totalSize))
         return render_template("displayresults.html", summary_sentences = get_summary(text), source = text)
 
 @commonPages.route("/displayresults", methods = ['POST', 'GET'])
@@ -110,3 +113,23 @@ def getExtension(path):
         """
         filename, file_extension = os.path.splitext(path)
         return file_extension
+
+def convert_bytes(num):
+    """
+    this function will convert bytes to MB.... GB... etc
+    """
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1024.0:
+            return "%3.1f %s" % (num, x)
+        num /= 1024.0
+
+
+def file_size(file_path):
+    """
+    this function will return the file size
+    """
+    if os.path.isfile(file_path):
+        file_info = os.stat(file_path)
+        global totalSize
+        totalSize = totalSize + file_info.st_size
+        return convert_bytes(file_info.st_size)
