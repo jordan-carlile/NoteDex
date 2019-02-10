@@ -1,10 +1,5 @@
-import bs4 as bs  
-import urllib.request
 import re
 import nltk
-import heapq
-import numpy as np 
-import pandas as pd
 from nltk.tokenize import sent_tokenize
 from rake_nltk import Rake
 
