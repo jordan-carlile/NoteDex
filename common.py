@@ -1,4 +1,9 @@
 from flask import Flask, url_for, redirect, render_template, request, Blueprint
+from google.cloud import speech
+from google.cloud.speech import enums
+from google.cloud.speech import types
+from get_transcript import get_transcript
+from werkzeug import secure_filename
 import time
 import json
 import requests
@@ -9,11 +14,7 @@ import nltk
 import os
 import re
 import io
-from werkzeug import secure_filename
 import importlib
-from google.cloud import speech
-from google.cloud.speech import enums
-from google.cloud.speech import types
 importlib.reload(sys)
 
 from rake_nltk import Rake
@@ -24,8 +25,6 @@ r = Rake() # Uses stopwords for english from NLTK, and all puntuation characters
 
 
 commonPages = Blueprint('commonPages', __name__)
-
-
 #-----------------Routing--------------------------------
 @commonPages.route("/", methods = ['POST', 'GET'])
 def index():
@@ -48,19 +47,24 @@ def upload_file_post():
     if request.method == 'POST':
         f = request.files['file']
         f.save(secure_filename(f.filename))
-        client = speech.SpeechClient()
-        print(secure_filename(f.filename))
-        with io.open(secure_filename(f.filename), 'rb') as audio_file:
-            content = audio_file.read()
-            audio = types.RecognitionAudio(content=content)
-        config = types.RecognitionConfig(encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,sample_rate_hertz=44100,language_code='en-US')
-        response = client.recognize(config, audio)
-        text = ""
-        for result in response.results:
-            text += result.alternatives[0].transcript
-            print(result.alternatives[0].transcript)
-        with open("text.txt", "w") as f:
-            f.write(text)
+        # client = speech.SpeechClient()
+        # print(secure_filename(f.filename))
+        # # with io.open(secure_filename(f.filename), 'rb') as audio_file:
+        # #     content = audio_file.read()
+        # #     audio = types.RecognitionAudio(content=content)
+        # audio = types.RecognitionAudio(uri=gcs_uri)
+        # config = types.RecognitionConfig(encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,sample_rate_hertz=8000,language_code='en-US')
+        # operation = client.long_running_recognize(config, audio)
+        # print('Waiting for operation to complete...')
+        # response = operation.result(timeout=90)
+        # text = ""
+        # for result in response.results:
+        #     text += result.alternatives[0].transcript
+        #     print(result.alternatives[0].transcript)
+        # with open("text.txt", "w") as f:
+        #     f.write(text)
+        text = get_transcript(secure_filename(f.filename), secure_filename(os.environ['GOOGLE_APPLICATION_CREDENTIALS']))
+        print(text)
         r.extract_keywords_from_text(text)
         return render_template("displayresults.html", keynote = r.get_ranked_phrases()[0:6], source = text)
 
