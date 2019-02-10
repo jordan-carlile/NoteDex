@@ -3,6 +3,7 @@ from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 from get_audio_transcript import get_audio_transcript
+from get_summary import get_summary
 from werkzeug import secure_filename
 import time
 import json
@@ -65,8 +66,7 @@ def upload_file_post():
         #     f.write(text)
         text = get_audio_transcript(secure_filename(f.filename), secure_filename(os.environ['GOOGLE_APPLICATION_CREDENTIALS']))
         print(text)
-        r.extract_keywords_from_text(text)
-        return render_template("displayresults.html", keynote = r.get_ranked_phrases()[0:6], source = text)
+        return render_template("displayresults.html", summary_sentences = get_summary(text), source = text)
 
 @commonPages.route("/displayresults", methods = ['POST', 'GET'])
 def displayresults():

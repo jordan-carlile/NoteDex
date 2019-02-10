@@ -56,7 +56,6 @@ def get_audio_transcript(file_name, key_name):
 
     transcript = ""
     for t in sorted(all_text, key=lambda x: x['idx']):
-        # Format time as h:m:s - 30 seconds of text
         transcript += "{}\n".format(t['text'])
     os.system("rm -rf {}".format(targDir))
     return transcript
