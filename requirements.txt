@@ -17,3 +17,5 @@ six==1.11.0
 SpeechRecognition==3.8.1
 tqdm==4.19.5
 uritemplate==3.0.0
+twilio
+google-cloud-vision
