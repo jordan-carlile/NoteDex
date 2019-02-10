@@ -33,17 +33,35 @@
           <p></p>
             <center><h4>Source</h4></center>
               {{source}}
-              <center><form action = "http://0.0.0.0:80/uploader" method = "POST"
+              <center><form action = "http://localhost:80/uploader" method = "POST"
                  enctype = "multipart/form-data">
                  <input type = "file" name = "file" />
                  <input type = "submit"/>
-              </form></center>
+              </form>
+            
+              <!--translate-->
+              
+              <h3>To cater to multinational notetakers, translate the text:</h3>
+              
+              <div id="google_translate_element"></div> 
+
+              <script type="text/javascript"> 
+              function googleTranslateElementInit() { 
+                new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element'); 
+              } 
+              </script> 
+              <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+              <!--end translate-->
+            
+            </center>
             <table style="width:100%" align="center">
         </div>
         <section class="content">
           <header>
           </header>
             <div class="flash">{{ message }}</div>
+
+
 
         </section>
 
