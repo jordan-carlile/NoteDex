@@ -1,4 +1,5 @@
 Flask
+Flask_Cors
 Flask-Session
 ItsDangerous==0.24
 nltk
