@@ -4,6 +4,7 @@ from google.cloud.speech import enums
 from google.cloud.speech import types
 from get_audio_transcript import get_audio_transcript
 from get_summary import get_summary
+from get_img_text import get_img_text
 from werkzeug import secure_filename
 import time
 import json
@@ -48,23 +49,12 @@ def upload_file_post():
     if request.method == 'POST':
         f = request.files['file']
         f.save(secure_filename(f.filename))
-        # client = speech.SpeechClient()
-        # print(secure_filename(f.filename))
-        # # with io.open(secure_filename(f.filename), 'rb') as audio_file:
-        # #     content = audio_file.read()
-        # #     audio = types.RecognitionAudio(content=content)
-        # audio = types.RecognitionAudio(uri=gcs_uri)
-        # config = types.RecognitionConfig(encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,sample_rate_hertz=8000,language_code='en-US')
-        # operation = client.long_running_recognize(config, audio)
-        # print('Waiting for operation to complete...')
-        # response = operation.result(timeout=90)
-        # text = ""
-        # for result in response.results:
-        #     text += result.alternatives[0].transcript
-        #     print(result.alternatives[0].transcript)
-        # with open("text.txt", "w") as f:
-        #     f.write(text)
-        text = get_audio_transcript(secure_filename(f.filename))
+        ext = getExtension(f.filename)
+        text = ""
+        if ext == '.mp4' or ext == '.wav':
+            text = get_audio_transcript(secure_filename(f.filename))
+        else:
+            text = get_img_text(secure_filename(f.filename))
         print(text)
         return render_template("displayresults.html", summary_sentences = get_summary(text), source = text)
 
@@ -74,7 +64,6 @@ def displayresults():
     if request.method == 'GET':
         if valid_or_not(question):
             r.extract_keywords_from_text(question)
-
             temp, mainwords, judgement = ["abc", ["sadasd","asdas"],["adsa"]], "csa", "adsa"
 #            db.writequestion(question, mainwords)
             return render_template("displayresults.html", keynote = r.get_ranked_phrases()[0:6])
@@ -109,3 +98,15 @@ def process_content():
 
     except Exception as e:
         print("error: "+str(e))
+
+def getExtension(path):
+        """
+        Gets the file extension from path
+
+        :param str path: Path of the file
+
+        :returns: File extension
+        :rtype: str
+        """
+        filename, file_extension = os.path.splitext(path)
+        return file_extension

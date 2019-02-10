@@ -9,11 +9,6 @@ def get_img_text(file_name):
 	# Instantiates a client
 	client = vision.ImageAnnotatorClient()
 
-	# The name of the image file to annotate
-	file_name = os.path.join(
-	    os.path.dirname(__file__),
-	    file_name)
-
 	# Loads the image into memory
 	with io.open(file_name, 'rb') as image_file:
 	    content = image_file.read()
@@ -24,6 +19,5 @@ def get_img_text(file_name):
 
 	texts = response.text_annotations
 
-	transcription = ' '.join([text.description for text in texts])
-	return transcription
-print(get_img_text('notes.jpg'))
+	return texts[0].description
+#print(get_img_text('notes.jpg'))
