@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='Elements/css/style.css')}}">
+    </head>
+        <div class="form">
+            <center><h3>KeyNote 1: {{keynote[0]}}</h3></a></form></center>
+            <center><h3>KeyNote 2:{{keynote[1]}}</h3></a></form></center>
+            <center><h3>KeyNote 3: {{keynote[2]}}</h3></a></form></center>
+            <center><h3>KeyNote 4:{{keynote[3]}}</h3></a></form></center>
+            <center><h3>KeyNote 5: {{keynote[4]}}</h3></a></form></center>
+            <center><h3>KeyNote 6:{{keynote[5]}}</h3></a></form></center>
+            <center><h5>Source: {{source}}</h4></a></form></center>
+              <center><form action = "http://localhost:8080/uploader" method = "POST"
+                 enctype = "multipart/form-data">
+                 <input type = "file" name = "file" />
+                 <input type = "submit"/>
+              </form></center>
+            <table style="width:100%" align="center">
+        </div>
+        <section class="content">
+          <header>
+          </header>
+            <div class="flash">{{ message }}</div>
+
+        </section>
+
+        <form action = "main" method = "post" class = "form">
+            <div class = "container" style = "width:800px; margin:0 auto;">
+                <input type="text" name="search" placeholder="Do you have another text?">
+                <input name = "Submit" type = "submit" value = "Submit">
+                <input name = "Submit" type = "reset" value = "Clear">
+            </div>
+        </form>
+    </body>
+</html>
