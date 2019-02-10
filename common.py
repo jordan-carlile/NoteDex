@@ -37,7 +37,7 @@ def index():
 @commonPages.route("/main", methods = ['POST', 'GET'])
 def main():
     if request.method == 'GET':
-        return render_template("main.html")
+        return render_template("displayresults.html")
     if request.method == 'POST':
         searchcontent = request.form["search"]
         return redirect(url_for('commonPages.displayresults', question = searchcontent))

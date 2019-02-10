@@ -9,6 +9,81 @@
 
 /* Basic */
 
+/* ----- =structure ----- */
+
+	html {
+		box-sizing: border-box;
+	}
+	
+	*, *:before, *:after {
+		box-sizing: inherit;
+	}
+	
+	header {
+		background-color: salmon;
+		
+	}
+	
+	main {
+		min-height: 400px;
+		background-color: #fff;
+	}
+	
+	footer {
+		height: 150px;
+		backgrgithubnd-color: #bdcbd9;
+	}
+	
+	.container {
+		width: 980px;
+		margin: auto;
+	}
+	
+	.container:after {
+		content: " ";
+		display: table;
+		clear: both;
+	}
+	
+	/* ----- =logo ----- */
+	
+	header h1 {
+		float: left;
+		font-family: Arial, sans-serif;
+		font-size: 40px;
+		margin: 30px 0 10px 0;
+	}
+	
+	header h1 a {
+		color: #424254;
+		text-decoration: none;
+	}
+	
+	header h1 a:hover {
+		color: red;
+	}
+	
+	
+	/* ----- =navigation ----- */
+	
+	header nav {
+		float: right;
+		margin-top: 52px;
+	}
+	
+	header nav a {
+		font-family: Arial, sans-serif;
+		font-size: 18px;
+		color: #424254;
+		margin-left: 40px;
+		text-decoration: none;
+	}
+	
+	header nav a:hover {
+		color: red;
+	}
+
+
 	body {
 		background: #fff;
 	}

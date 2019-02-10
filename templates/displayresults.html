@@ -3,6 +3,24 @@
     <head>
         <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='Elements/css/style.css')}}">
     </head>
+
+    <header>
+      <div class="container">
+        <center><h1>
+          <img src="https://www.dropbox.com/s/4bl0pk081zloxa7/notedex.png?raw=1" width="300" height="150"/>
+        </h1></center>
+      </div>
+    </header>
+
+    <body style="
+    background-image: linear-gradient(45deg, rgba(194, 233, 221, .5) 90%, rgba(104, 119, 132, .5)), linear-gradient(-45deg, #494d71, hsla(77, 47%, 81%, .5) 80%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Open Sans;
+    color: black;
+    margin: 0;
+    padding: 0">
+
         <div class="form">
           <center> 
             <h4> Summary </h4>
@@ -29,12 +47,5 @@
 
         </section>
 
-        <form action = "main" method = "post" class = "form">
-            <div class = "container" style = "width:800px; margin:0 auto;">
-                <input type="text" name="search" placeholder="Do you have another text?">
-                <input name = "Submit" type = "submit" value = "Submit">
-                <input name = "Submit" type = "reset" value = "Clear">
-            </div>
-        </form>
     </body>
 </html>
