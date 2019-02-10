@@ -15,7 +15,7 @@ def get_img_text(file_name):
 
 	image = vision.types.Image(content=content)
 
-	response = client.text_detection(image=image)
+	response = client.document_text_detection(image=image)
 
 	texts = response.text_annotations
 
